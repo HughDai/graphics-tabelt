@@ -5,7 +5,7 @@ const path = require('path')
 const baseWebpackConfig = require('./webpack.base.conf')
 const WebpackMd5Hash = require("webpack-md5-hash")
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+// const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const ProgressWebpackPlugin = require('progress-bar-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -30,6 +30,7 @@ module.exports = merge(baseWebpackConfig, {
   plugins: [
     new ProgressWebpackPlugin(),
     new CleanWebpackPlugin(),
+    
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
     new OptimizeCSSPlugin({

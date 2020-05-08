@@ -24,14 +24,14 @@ exports.cssLoaders = function (options) {
   var postcssLoader = {
     loader: 'postcss-loader',
     options: {
-      sourceMap: true
+      sourceMap: options.sourceMap
     }
   }
 
   var sassLoader = {
     loader: 'sass-loader',
     options: {
-      sourceMap: true
+      sourceMap: options.sourceMap
     }
   }
   

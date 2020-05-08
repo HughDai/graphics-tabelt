@@ -6,6 +6,7 @@ var config = require('../config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -77,16 +78,18 @@ module.exports = {
     crypto: 'empty',
   },
   plugins: [
-    // new HtmlWebpackPlugin({
-    //   inject: true,
-    //   hash: true,
-    //   template: 'index.html',
-    //   filename: 'index.html'
-    // })
     // extract css into its own file
     new MiniCssExtractPlugin({
-      filename: utils.assetsPath('css/[name].[contenthash].css'),
-      chunkFilename: utils.assetsPath('css/[id].[contenthash].css'),
-    })
+      filename: utils.assetsPath('[name].[contenthash].css'),
+      chunkFilename: utils.assetsPath('[id].[contenthash].css'),
+    }),
+    // copy custom static assets
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, '../favicon.ico'),
+        to: config.dev.assetsSubDirectory,
+        ignore: ['.*'],
+      }
+    ])
   ]
 }

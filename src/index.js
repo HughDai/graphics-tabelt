@@ -113,7 +113,7 @@ const getLineWidth = e => {
       // if (width < MIN_WIDTH) {
       //   return MIN_WIDTH 
       // }
-      return width >> 0
+      return parseFloat(width.toFixed(3))
       break
 
     case 'mouse':

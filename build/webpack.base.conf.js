@@ -86,7 +86,7 @@ module.exports = {
     // copy custom static assets
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, '../favicon.ico'),
+        from: path.resolve(__dirname, '../favicon.ico', '../ScribbleDemoHPE'),
         to: config.dev.assetsSubDirectory,
         ignore: ['.*'],
       }

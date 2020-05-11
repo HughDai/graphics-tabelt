@@ -35,7 +35,9 @@ exports.cssLoaders = function (options) {
     }
   }
   
-  const loaders = [cssLoader, postcssLoader, sassLoader]
+  const loaders = [cssLoader, postcssLoader]
+
+  if (options.useSass) loaders.push(sassLoader)
 
   // Extract CSS when that option is specified
   // (which is the case during production build)

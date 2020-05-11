@@ -3,6 +3,8 @@ import Konva from './konva'
 import Timemachine from './timemachine'
 import sceneFunc from './sceneFunc'
 import cursorPen from '@/images/cursor-pen.png'
+import Pickr from '@simonwep/pickr'
+import '@simonwep/pickr/dist/themes/nano.min.css'  // 'nano' theme
 
 // 操作类型
 const UNDO = 'UNDO'
@@ -22,13 +24,14 @@ export default class Board {
     this.colorEle = document.getElementById('colors')
     this.stage = null
     this.layer = null
-    this.strokeColor = 'black'
+    this.strokeColor = ''
     this.timemachine = new Timemachine()
     this.init()
   }
 
   init () {
     this.initStage()
+    this.initPicker()
     this.attachEvents()
   }
 
@@ -43,6 +46,60 @@ export default class Board {
     this.container.style.cursor = `url(${cursorPen}) 0 0, move`
   }
 
+  initPicker () {
+    const options = {
+      components: {
+        // Main components
+        preview: true,
+        opacity: true,
+        hue: true,
+        // Input / output Options
+        interaction: {
+          hex: true,
+          rgba: true,
+          hsla: true,
+          hsva: true,
+          cmyk: true,
+          input: true,
+          clear: true,
+          // save: true
+        }
+      }
+    }
+    const bgPicker = Pickr.create({
+      el: '#color-picker-layer',
+      theme: 'nano',
+      default: '#ffffff',
+      ...options
+    })
+
+    const fgPicker = Pickr.create({
+      el: '#color-picker-brush',
+      theme: 'nano',
+      default: '#ff0000',
+      ...options
+    })
+
+    bgPicker.on('init', instance => {
+      this.setBgColor(instance._color.toRGBA().toString())
+    })
+
+    bgPicker.on('change', (color, instance) => {
+      let lastColor = color.toRGBA().toString()
+      bgPicker.setColor(lastColor)
+      this.setBgColor(lastColor)
+    })
+
+    fgPicker.on('init', instance => {
+      this.strokeColor = instance._color.toRGBA().toString()
+    })
+    fgPicker.on('change', (color, instance)=> {
+      let lastColor = color.toRGBA().toString()
+      fgPicker.setColor(lastColor)
+      this.strokeColor = lastColor
+    })
+  }
+
   attachEvents () {
     this.opEle.addEventListener('click', e => {
       e.stopPropagation()
@@ -53,14 +110,6 @@ export default class Board {
           let handle = `handle${ID}`
           this[handle].call(this)
         }
-      }
-    }, false)
-
-    this.colorEle.addEventListener('click', e => {
-      e.stopPropagation()
-      const target = e.target
-      if (target.nodeName === 'LI') {
-        this.strokeColor = target.dataset['id']
       }
     }, false)
   }
@@ -193,5 +242,9 @@ export default class Board {
     })
     this.layer.destroyChildren()
     this.stage.draw()
+  }
+
+  setBgColor (color) {
+    this.container.style.backgroundColor = color
   }
 }

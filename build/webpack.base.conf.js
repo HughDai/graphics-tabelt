@@ -48,9 +48,17 @@ module.exports = {
         }
       },
       {
+        test: /\.css$/,
+        use: utils.cssLoaders({
+          sourceMap: config.dev.cssSourceMap,
+          extract: true,
+        })
+      },
+      {
         test: /\.(sass|scss)$/,
         use: utils.cssLoaders({
           sourceMap: config.dev.cssSourceMap,
+          useSass: true,
           extract: true,
         })
       },

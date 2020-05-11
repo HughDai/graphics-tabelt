@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/HughDai/graphics-tabelt#readme",
   "dependencies": {
+    "@simonwep/pickr": "^1.6.0",
     "file-saver": "^2.0.2",
     "konva": "^5.0.2",
     "pepjs": "^0.5.2",

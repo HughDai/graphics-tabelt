@@ -1,4 +1,4 @@
-import 'pepjs'
+// import 'pepjs'
 import { v4 as uuidv4 } from 'uuid'
 import Konva from './scripts/konva'
 import sceneFunc from './scripts/sceneFunc'
@@ -135,8 +135,8 @@ const checkButtons = e => {
 const getPointerPosition = e => {
   // stage.getPointerPosition()返回的是int类型，需要float类型
   let pos = stage.getPointerPosition()
-  let x = Number.isInteger(pos.x) ? pos.x : pos.x.toFixed(3)
-  let y = Number.isInteger(pos.y) ? pos.y : pos.y.toFixed(3)
+  let x = Number.isInteger(pos.x) ? pos.x : pos.x.toFixed(2)
+  let y = Number.isInteger(pos.y) ? pos.y : pos.y.toFixed(2)
   return { x, y }
   // const canvasRect = container.getBoundingClientRect()
   // const { top, left } = canvasRect

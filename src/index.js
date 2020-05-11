@@ -3,7 +3,8 @@ import { v4 as uuidv4 } from 'uuid'
 import Konva from './scripts/konva'
 import sceneFunc from './scripts/sceneFunc'
 import Board from './scripts/board'
-
+import cursorPen from '@/images/cursor-pen.png'
+import cursorEraser from '@/images/cursor-eraser.png'
 import './styles/main.scss'
 
 const MAX_WIDTH = 2
@@ -133,25 +134,25 @@ const checkButtons = e => {
 
 const getPointerPosition = e => {
   // stage.getPointerPosition()返回的是int类型，需要float类型
-  // let pos = stage.getPointerPosition()
-  // let x = Number.isInteger(pos.x) ? pos.x : pos.x.toFixed(3)
-  // let y = Number.isInteger(pos.y) ? pos.y : pos.y.toFixed(3)
-  // return { x, y }
-  const canvasRect = container.getBoundingClientRect()
-  const { top, left } = canvasRect
-  const position = {
-    x: e.clientX - left,
-    y: e.clientY - top
-  }
-  return {
-    x: position.x.toFixed(3),
-    y: position.y.toFixed(3)
-  }
+  let pos = stage.getPointerPosition()
+  let x = Number.isInteger(pos.x) ? pos.x : pos.x.toFixed(3)
+  let y = Number.isInteger(pos.y) ? pos.y : pos.y.toFixed(3)
+  return { x, y }
+  // const canvasRect = container.getBoundingClientRect()
+  // const { top, left } = canvasRect
+  // const position = {
+  //   x: e.clientX - left,
+  //   y: e.clientY - top
+  // }
+  // return {
+  //   x: position.x.toFixed(3),
+  //   y: position.y.toFixed(3)
+  // }
 }
 
 const changeCursorStyle = type => {
-  let icon = require(`@/images/cursor-${type}.png`).default
-  board.container.style.cursor = `url(${icon}) 0 0, move`
+  let cursor = type === 'pen' ? cursorPen : cursorEraser
+  board.container.style.cursor = `url(${cursor}) 0 0, move`
 }
 
 container.addEventListener('pointerdown', onPointerdown)

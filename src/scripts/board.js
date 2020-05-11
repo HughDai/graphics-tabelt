@@ -2,6 +2,7 @@ import { saveAs } from 'file-saver'
 import Konva from './konva'
 import Timemachine from './timemachine'
 import sceneFunc from './sceneFunc'
+import cursorPen from '@/images/cursor-pen.png'
 
 // 操作类型
 const UNDO = 'UNDO'
@@ -39,7 +40,7 @@ export default class Board {
     })
     this.layer = new Konva.Layer()
     this.stage.add(this.layer)
-    this.container.style.cursor = 'url(' + require('@/images/cursor-pen.png').default  + ') 0 0, move'
+    this.container.style.cursor = `url(${cursorPen}) 0 0, move`
   }
 
   attachEvents () {

@@ -4,6 +4,7 @@ import Timemachine from './timemachine'
 import sceneFunc from './sceneFunc'
 import cursorPen from '@/images/cursor-pen.png'
 import Pickr from '@simonwep/pickr'
+import { debounce, throttle } from './util'
 import '@simonwep/pickr/dist/themes/nano.min.css'  // 'nano' theme
 
 // 操作类型
@@ -33,13 +34,21 @@ export default class Board {
     this.initStage()
     this.initPicker()
     this.attachEvents()
+    window.addEventListener('resize', debounce(() => {
+      console.log(this.container.clientWidth)
+      this.stage.size({
+        width: this.container.clientWidth,
+        height: this.container.clientHeight
+      })
+      console.log(this.stage.size())
+    }, 350))
   }
 
   initStage () {
     this.stage = new Konva.Stage({
       container: this.container,
-      width: window.innerWidth,
-      height: window.innerHeight
+      width: this.container.clientWidth,
+      height:this.container.clientHeight
     })
     this.layer = new Konva.Layer()
     this.stage.add(this.layer)
@@ -48,6 +57,22 @@ export default class Board {
 
   initPicker () {
     const options = {
+      swatches: [
+        'rgba(244, 67, 54, 1)',
+        'rgba(233, 30, 99, 0.95)',
+        'rgba(156, 39, 176, 0.9)',
+        'rgba(103, 58, 183, 0.85)',
+        'rgba(63, 81, 181, 0.8)',
+        'rgba(33, 150, 243, 0.75)',
+        'rgba(3, 169, 244, 0.7)',
+        'rgba(0, 188, 212, 0.7)',
+        'rgba(0, 150, 136, 0.75)',
+        'rgba(76, 175, 80, 0.8)',
+        'rgba(139, 195, 74, 0.85)',
+        'rgba(205, 220, 57, 0.9)',
+        'rgba(255, 235, 59, 0.95)',
+        'rgba(255, 193, 7, 1)'
+      ],
       components: {
         // Main components
         preview: true,
@@ -61,7 +86,7 @@ export default class Board {
           hsva: true,
           cmyk: true,
           input: true,
-          clear: true,
+          // clear: true,
           // save: true
         }
       }

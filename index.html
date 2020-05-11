@@ -9,20 +9,22 @@
 </head>
 <body>
   <div class="stage" id="stage-container"></div>
-  <div class="selectors pickers">
-    <label>LAYER</label>
-    <div id="color-picker-layer"></div>
-    <label>BRUSH</label>
-    <div id="color-picker-brush"></div>
+  <div class="settings">
+    <div class="pickers">
+      <label>LAYER</label>
+      <div id="color-picker-layer"></div>
+      <label>BRUSH</label>
+      <div id="color-picker-brush"></div>
+    </div>
+    <ul class="operations" id="operations">
+      <li data-id="pen" class="icon icon-pen"></li>
+      <li data-id="eraser" class="icon icon-eraser"></li>
+      <li data-id="undo" class="icon icon-undo"></li>
+      <li data-id="redo" class="icon icon-redo"></li>
+      <li data-id="save" class="icon icon-save"></li>
+      <li data-id="clear" class="icon icon-clear"></li>
+    </ul>
   </div>
-  <ul class="selectors operations" id="operations">
-    <li data-id="pen" class="icon icon-pen"></li>
-    <li data-id="eraser" class="icon icon-eraser"></li>
-    <li data-id="undo" class="icon icon-undo"></li>
-    <li data-id="redo" class="icon icon-redo"></li>
-    <li data-id="save" class="icon icon-save"></li>
-    <li data-id="clear" class="icon icon-clear"></li>
-  </ul>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-71406771-2"></script>
   <script>

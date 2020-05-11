@@ -14,22 +14,26 @@ $icons: (pen, eraser, undo, redo, save, clear);
 $colors: (black, blue, red, green, white);
 
 .stage {
-  touch-action: none;
-  width: 100%;
   height: 100%;
-  // background: url("~@/images/black-board.jpg") center repeat;
+  margin-right: 88px;
+  touch-action: none;
+  user-select: none;
 }
 
 .icon {
+  cursor: pointer;
   &:hover {
     transition: all 0.1s;
     transform: scale(1.2);
-    background-color: #c5ced6;
+    background-color: #ffffff;
+    box-shadow: rgb(255, 255, 255) 0px 0px 16px;
+    border: 1px solid #d8d8d8;
+    border-radius: 4px;
   }
 }
 
 .hl {
-  background-color: #e6e6b9;
+  background-color: #ffffff;
 }
 
 @each $icon in $icons {
@@ -44,38 +48,53 @@ $colors: (black, blue, red, green, white);
   }
 }
 
-.selectors {
+.settings {
   position: absolute;
-  bottom: 50px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  width: 88px;
+  overflow: hidden;
+  background-color: rgb(221, 221, 221);
+  border-left: 1px solid rgb(187, 187, 187);
+  user-select: none;
+  touch-action: none;
   display: flex;
-  justify-content: space-around;
-  li {
-    width: 40px;
-    height: 40px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    & ~ li {
-      margin-left: 20px;
-    }
-  }
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  text-align: center;
 }
 
 .operations {
-  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  li {
+    width: 40px;
+    height: 40px;
+    & ~ li {
+      margin-top: 22px;
+    }
+  }
 }
 
 .pickers {
   left: 20px;
   label {
+    display: block;
     font-weight: 600;
     &:last-of-type {
-      margin-left: 20px;
+      margin-top: 20px;
     }
   }
   button {
-    border: 1px solid #000000;
+    // width: 40px;
+    // height: 40px;
+    // border: 1px solid #000000;
     &:last-of-type {
-      margin-left: 20px;
+      margin-top: 20px;
     }
   }
 }

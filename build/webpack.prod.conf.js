@@ -41,6 +41,7 @@ module.exports = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       inject: true,
       hash: true,
+      chunks:['main'],
       template: 'index.html',
       filename: 'index.html',
       minify: {
@@ -50,8 +51,13 @@ module.exports = merge(baseWebpackConfig, {
         // more options:
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
-
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+    }),
+    new HtmlWebpackPlugin({
+      chunks:['test'],
+      filename: 'test.html',
+      template: 'test.html',
+      inject: true,
     }),
     new WebpackMd5Hash()
   ]

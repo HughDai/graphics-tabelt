@@ -13,7 +13,7 @@ function resolve (dir) {
 }
 
 module.exports = {
-  entry: { main: './src/index.js' },
+  entry: { main: './src/index.js', test: './src/test.js' },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].[hash].bundle.js'

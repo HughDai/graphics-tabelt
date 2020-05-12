@@ -1,4 +1,4 @@
-// import 'pepjs'
+import 'pepjs'
 import { v4 as uuidv4 } from 'uuid'
 import Konva from './scripts/konva'
 import sceneFunc from './scripts/sceneFunc'
@@ -48,7 +48,7 @@ const createBrush = () => {
   brush = new Konva.Shape({
     ...BRUSH_CONFIG,
     name: mode,
-    strokeWidth: mode === DRAW_MODE.PEN ? 0 : 16,
+    strokeWidth: mode === DRAW_MODE.PEN ? 0 : 32,
     stroke: board.strokeColor,
     globalCompositeOperation: mode === DRAW_MODE.PEN
       ? COMPOSITE_OPERATION.SOURCE_OVER
@@ -61,7 +61,6 @@ const createBrush = () => {
 }
 
 const onPointerdown = e => {
-  // console.log(e)
   isDrawing = true
   let isEraser = checkButtons(e)
   mode = isEraser ? DRAW_MODE.ERASER : DRAW_MODE.PEN

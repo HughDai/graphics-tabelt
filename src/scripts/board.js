@@ -176,7 +176,7 @@ export default class Board {
         case ADD:
           data.forEach(n => {
             let node = this.stage.findOne('#' + n.id())
-            node && node.destroy()
+            node && node.remove()
           })
           break
         case REMOVE:
@@ -201,7 +201,7 @@ export default class Board {
         case REMOVE:
           data.forEach(n => {
             let node = this.stage.findOne('#' + n.id())
-            node && node.destroy()
+            node && node.remove()
           })
           break
       }
@@ -216,7 +216,7 @@ export default class Board {
       switch (action) {
         case ADD:
           if (node) {
-            node.destroy() 
+            node.remove() 
           }
           break
         case REMOVE:
@@ -229,7 +229,7 @@ export default class Board {
           this.layer.add(data)
           break
         case REMOVE:
-          node && node.destroy()
+          node && node.remove()
           break
       }
     }
@@ -265,7 +265,7 @@ export default class Board {
       action: 'remove',
       data: [...children]
     })
-    this.layer.destroyChildren()
+    this.layer.removeChildren()
     this.stage.draw()
   }
 

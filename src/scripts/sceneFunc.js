@@ -41,7 +41,7 @@ export default {
       context.beginPath()
       context.moveTo(points[0], points[1])
       for (let n = 2; n < length; n += 2) {
-        context.lineTo(points[n], points[n + 1]);
+        context.lineTo(points[n], points[n + 1])
       }
       context.strokeShape(shape)
     } else {

@@ -1,3 +1,5 @@
+import { Vec2 } from './util'
+
 /**
  * creates bezier curve from control points
  *
@@ -45,6 +47,7 @@ export default {
     } else {
       for (let n = lastIndex; n < length; n += 2) {
         _context.lineWidth = widths[n / 2]
+        
         _context.beginPath()
         _context.moveTo(points[lastIndex], points[lastIndex + 1])
 

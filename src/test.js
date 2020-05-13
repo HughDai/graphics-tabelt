@@ -22,14 +22,7 @@ const BUTTONS = {
   forward: 0x10,  // 鼠标X2 (forward)
   eraser: 0x20    // 压感笔接触且橡皮擦按钮被按压
 }
-const BRUSH_CONFIG = {
-  stroke: '#0000FF',
-  tension: 1,
-  lineCap: 'round',
-  lineJoin: 'round',
-  draggable: false,
-  dash: false
-}
+
 const COMPOSITE_OPERATION = {
   SOURCE_OVER: 'source-over',
   DESTINATION_OUT: 'destination-out'
@@ -37,70 +30,18 @@ const COMPOSITE_OPERATION = {
 
 const container = document.getElementById('stage-container')
 const board = new Board({ container })
+
 let brush = null
 
 const { stage, layer } = board
 
+const canvas = document.getElementById('my-house')
+const context = canvas.getContext('2d')
+
 let isDrawing = false
+let lastPos = null
+let lineWidth = 1
 let mode = DRAW_MODE.PEN
-
-const createBrush = () => {
-  brush = new Konva.Shape({
-    ...BRUSH_CONFIG,
-    name: mode,
-    strokeWidth: mode === DRAW_MODE.PEN ? 0 : 32,
-    stroke: board.strokeColor,
-    globalCompositeOperation: mode === DRAW_MODE.PEN
-      ? COMPOSITE_OPERATION.SOURCE_OVER
-      : COMPOSITE_OPERATION.DESTINATION_OUT,
-    sceneFunc: function(context) {
-      sceneFunc.brush(context, this)
-    }
-  })
-  brush.id(uuidv4())
-}
-
-const onPointerdown = e => {
-  isDrawing = true
-  let isEraser = checkButtons(e)
-  mode = isEraser ? DRAW_MODE.ERASER : DRAW_MODE.PEN
-  changeCursorStyle(mode)
-  createBrush()
-  let pos = getPointerPosition(e)
-  let width = getLineWidth(e)
-  brush.setAttrs({
-    points: [pos.x, pos.y],
-    widths: isEraser ? null : [width]
-  })
-}
-
-const onPointermove = e => {
-  if (!isDrawing) return
-  if (!brush.getLayer()) layer.add(brush)
-  let pos = getPointerPosition(e)
-  let { points, widths } = brush.getAttrs()
-  let newPoints = points.concat([pos.x, pos.y])
-  mode !== DRAW_MODE.ERASER && widths.push(getLineWidth(e))
-  brush.setAttrs({
-    points: newPoints,
-    widths
-  })
-  layer.draw()
-}
-
-const onPointerup = e =>  {
-  isDrawing = false
-  if (brush.attrs.added || !brush.getLayer()) return
-  brush.attrs.added = true
-  board.timemachine.push({
-    action: 'add',
-    data: brush
-  })
-}
-
-const onPointerleave = e => {
-  isDrawing = false
-}
 
 const getLineWidth = e => {
   switch (e.pointerType) {
@@ -113,7 +54,8 @@ const getLineWidth = e => {
       // if (width < MIN_WIDTH) {
       //   return MIN_WIDTH 
       // }
-      return parseFloat(width.toFixed(3))
+      // return parseFloat(width.toFixed(3))
+      return width
       break
 
     case 'mouse':
@@ -131,75 +73,64 @@ const checkButtons = e => {
   return (e.pointerType === 'pen' && e.buttons === BUTTONS.eraser)
 }
 
-const getPointerPosition = e => {
-  // stage.getPointerPosition()返回的是int类型，需要float类型
-  let pos = stage.getPointerPosition()
-  let x = Number.isInteger(pos.x) ? pos.x : pos.x.toFixed(2)
-  let y = Number.isInteger(pos.y) ? pos.y : pos.y.toFixed(2)
-  return { x, y }
-  // const canvasRect = container.getBoundingClientRect()
-  // const { top, left } = canvasRect
-  // const position = {
-  //   x: e.clientX - left,
-  //   y: e.clientY - top
-  // }
-  // return {
-  //   x: position.x.toFixed(3),
-  //   y: position.y.toFixed(3)
-  // }
-}
-
 const changeCursorStyle = type => {
   let cursor = type === 'pen' ? cursorPen : cursorEraser
   board.container.style.cursor = `url(${cursor}) 0 0, move`
 }
 
+function midPointBetween(p1, p2) {
+  return {
+    x: p1.x + (p2.x - p1.x) / 2,
+    y: p1.y + (p2.y - p1.y) / 2
+  }
+}
+
+const draw = pos => {
+  context.strokeStyle = board.strokeColor
+  context.lineWidth = lineWidth
+  context.lineJoin = 'round'
+  context.lineCap = 'round'
+  context.beginPath()
+  context.moveTo(lastPos.x, lastPos.y)
+  // let midPoint = midPointBetween(lastPos, pos)
+  // context.quadraticCurveTo(lastPos.x, lastPos.y, midPoint.x, midPoint.y)
+  context.lineTo(pos.x, pos.y)
+  context.stroke()
+  layer.draw()
+  lastPos = pos
+}
+
 window.pointerdown = event => {
   isDrawing = true
-  let isEraser = checkButtons(event)
-  mode = isEraser ? DRAW_MODE.ERASER : DRAW_MODE.PEN
-  changeCursorStyle(mode)
-  createBrush()
-  let pos = event.pos
-  let width = getLineWidth(event)
-  brush.setAttrs({
-    points: [pos.x, pos.y],
-    widths: isEraser ? null : [width]
-  })
+  lastPos = event.pos
+  console.log(lastPos)
 }
+
 
 window.pointermove = event => {
   if (!isDrawing) return
-  if (!brush.getLayer()) layer.add(brush)
-  let pos = event.pos
-  let { points, widths } = brush.getAttrs()
-  let newPoints = points.concat([pos.x, pos.y])
-  mode !== DRAW_MODE.ERASER && widths.push(getLineWidth(event))
-  brush.setAttrs({
-    points: newPoints,
-    widths
-  })
-  layer.draw()
+  const { pos, pressure, pointerType } = event
+  for (var i = 0; i < pos.length; i++) {
+    console.log(pos[i])
+    lineWidth = pressure[i] * 8
+    draw(pos[i])
+  }
 }
 
 window.pointerup = () => {
   isDrawing = false
-  if (brush.attrs.added || !brush.getLayer()) return
-  brush.attrs.added = true
-  board.timemachine.push({
-    action: 'add',
-    data: brush
-  })
 }
 
 window.pointerleave = () => {
   isDrawing = false
 }
 
-// container.addEventListener('pointerdown', onPointerdown)
-// container.addEventListener('pointermove', onPointermove)
-// container.addEventListener('pointerup', onPointerup)
-// container.addEventListener('pointerleave', onPointerleave)
+window.canvasready = cb => {
+  window.addEventListener('load', () => {
+    console.log('page is fully loaded')
+    cb && cb()
+  })
+}
 
 board.opEle.addEventListener('click', e => {
   const id = e.target.dataset['id']

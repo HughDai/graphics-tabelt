@@ -13,7 +13,7 @@ export const Vec2 = {
       return Math.sqrt(Math.pow(p.x, 2) + Math.pow(p.y, 2))
   },
   dist: function (p1, p2) {
-      return BV.Vec2.len(BV.Vec2.sub(p1, p2))
+      return Vec2.len(Vec2.sub(p1, p2))
   },
   mul: function (p, s) {
       return {x: p.x * s, y: p.y * s}

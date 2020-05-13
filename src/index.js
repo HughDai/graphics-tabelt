@@ -134,6 +134,8 @@ const checkButtons = e => {
 const getPointerPosition = e => {
   // stage.getPointerPosition()返回的是int类型，需要float类型
   let pos = stage.getPointerPosition()
+  if (!pos) pos = { x: e.clientX, y: e.clientY }
+  console.log(pos)
   let x = Number.isInteger(pos.x) ? pos.x : pos.x.toFixed(2)
   let y = Number.isInteger(pos.y) ? pos.y : pos.y.toFixed(2)
   return { x, y }

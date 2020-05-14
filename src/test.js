@@ -113,8 +113,8 @@ window.pointerdown = event => {
 window.pointermove = event => {
   if (!isDrawing) return
   const { pos, pressure, pointerType, buttons } = event
-  lineWidth = pressure
   isEraser = buttons === BUTTONS.eraser
+  lineWidth = isEraser ? 128 : pressure * 8
   draw(pos)
 }
 

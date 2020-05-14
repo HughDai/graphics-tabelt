@@ -37,6 +37,7 @@ const { stage, layer } = board
 
 const canvas = document.getElementById('my-house')
 const context = canvas.getContext('2d')
+let isEraser = false
 
 let isDrawing = false
 let lastPos = null
@@ -86,7 +87,10 @@ function midPointBetween(p1, p2) {
 }
 
 const draw = pos => {
-  context.strokeStyle = board.strokeColor
+  context.globalCompositeOperation = isEraser
+    ? COMPOSITE_OPERATION.DESTINATION_OUT
+    : COMPOSITE_OPERATION.SOURCE_OVER
+  context.strokeStyle = isEraser ? 'white' : board.strokeColor
   context.lineWidth = lineWidth
   context.lineJoin = 'round'
   context.lineCap = 'round'
@@ -106,15 +110,12 @@ window.pointerdown = event => {
   console.log(lastPos)
 }
 
-
 window.pointermove = event => {
   if (!isDrawing) return
-  const { pos, pressure, pointerType } = event
-  for (var i = 0; i < pos.length; i++) {
-    console.log(pos[i])
-    lineWidth = pressure[i] * 8
-    draw(pos[i])
-  }
+  const { pos, pressure, pointerType, buttons } = event
+  lineWidth = pressure
+  isEraser = buttons === BUTTONS.eraser
+  draw(pos)
 }
 
 window.pointerup = () => {
